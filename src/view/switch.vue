@@ -185,10 +185,10 @@ const switchList = computed<SwitchItem[]>(() => [
   }
 ])
 
-function BeforeShowTrayIconChange (): boolean | Promise<void> {
+function BeforeShowTrayIconChange (): boolean | Promise<boolean> {
   if (!proxy.value.ShowTrayIcon) return true
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     ElMessageBox.confirm(
       t('icon_warning'),
       t('warning'),
@@ -197,11 +197,13 @@ function BeforeShowTrayIconChange (): boolean | Promise<void> {
         cancelButtonText: t('cancel'),
         type: 'warning'
       }
-    ).then(() => {
-      resolve()
-    }).catch(() => {
-      // 用户取消，不做任何事情
-    })
+    )
+      .then(() => {
+        resolve(true)
+      })
+      .catch(() => {
+        reject(new Error('cancelled by user'))
+      })
   })
 }
 

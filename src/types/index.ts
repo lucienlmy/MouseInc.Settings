@@ -129,7 +129,7 @@ export interface SwitchItem {
   label: string
   model: keyof Config
   disabledFn?: (_proxy: Config) => boolean
-  beforeChange?: () => boolean | Promise<void>
+  beforeChange?: () => boolean | Promise<boolean>
 }
 
 // 选择项配置
